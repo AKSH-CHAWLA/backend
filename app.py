@@ -22,7 +22,7 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 CONVERTED_DIR.mkdir(exist_ok=True)
 
 app = Flask(__name__, static_folder=None)
-app.secret_key = os.environ.get("SESSION_SECRET", "change-this-secret-before-deploying")
+app.secret_key = os.environ["SESSION_SECRET"]
 app.config["MAX_CONTENT_LENGTH"] = 200 * 1024 * 1024  # 200MB per request
 
 OFFICE_EXTS = {".ppt", ".pptx", ".doc", ".docx", ".xls", ".xlsx", ".odt", ".odp", ".ods"}
