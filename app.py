@@ -11,6 +11,7 @@ from flask import (
     Flask, request, session, jsonify, send_file, send_from_directory,
     redirect,
 )
+from flask_cors import CORS
 from werkzeug.security import check_password_hash
 
 from db import get_db, init_db, BASE_DIR
@@ -22,8 +23,18 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 CONVERTED_DIR.mkdir(exist_ok=True)
 
 app = Flask(__name__, static_folder=None)
+CORS(
+    app,
+    origins=["https://marvelous-heliotrope-053358.netlify.app/"],
+    supports_credentials=True
+)
 app.secret_key = os.environ["SESSION_SECRET"]
-app.config["MAX_CONTENT_LENGTH"] = 200 * 1024 * 1024  # 200MB per request
+
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+
+app.config["MAX_CONTENT_LENGTH"] = 200 * 1024 * 1024
 
 OFFICE_EXTS = {".ppt", ".pptx", ".doc", ".docx", ".xls", ".xlsx", ".odt", ".odp", ".ods"}
 CODE_EXTS = {
